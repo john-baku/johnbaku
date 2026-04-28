@@ -5,7 +5,7 @@ local player = Players.LocalPlayer
 ----------------------------------------------------
 -- KEY SYSTEM
 ----------------------------------------------------
-local CORRECT_KEY = "Admin123"
+local CORRECT_KEY = "NIGHTSPENDERX"
 
 local keyGui = Instance.new("ScreenGui", game.CoreGui)
 keyGui.Name = "KeySystem"
