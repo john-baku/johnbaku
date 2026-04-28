@@ -1,4 +1,46 @@
 local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+----------------------------------------------------
+-- KEY SYSTEM
+----------------------------------------------------
+local CORRECT_KEY = "Admin123"
+
+local keyGui = Instance.new("ScreenGui", game.CoreGui)
+keyGui.Name = "KeySystem"
+
+local keyFrame = Instance.new("Frame", keyGui)
+keyFrame.Size = UDim2.new(0, 300, 0, 150)
+keyFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+keyFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+keyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+
+Instance.new("UICorner", keyFrame)
+
+local keyBox = Instance.new("TextBox", keyFrame)
+keyBox.Size = UDim2.new(0.8, 0, 0, 40)
+keyBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+keyBox.PlaceholderText = "Enter Key..."
+keyBox.Text = ""
+keyBox.Font = Enum.Font.Gotham
+keyBox.TextSize = 16
+
+local submit = Instance.new("TextButton", keyFrame)
+submit.Size = UDim2.new(0.8, 0, 0, 40)
+submit.Position = UDim2.new(0.1, 0, 0.6, 0)
+submit.Text = "Submit"
+submit.Font = Enum.Font.GothamBold
+submit.TextSize = 16
+submit.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+submit.TextColor3 = Color3.new(1,1,1)
+
+Instance.new("UICorner", submit)
+
+----------------------------------------------------
+-- MAIN UI FUNCTION (YOUR SCRIPT INSIDE HERE)
+----------------------------------------------------
+local function LoadMainUI()
 
 ----------------------------------------------------
 -- COUNTRIES
@@ -50,216 +92,221 @@ local countries = {
 -- INFO (HINT SYSTEM)
 ----------------------------------------------------
 local info = {
-CAMBODIA={continent="Asia",city="Phnom Penh",flag="🇰🇭"},
-CANADA={continent="North America",city="Ottawa",flag="🇨🇦"},
-CHINA={continent="Asia",city="Beijing",flag="🇨🇳"},
-JAPAN={continent="Asia",city="Tokyo",flag="🇯🇵"},
-FRANCE={continent="Europe",city="Paris",flag="🇫🇷"},
-GERMANY={continent="Europe",city="Berlin",flag="🇩🇪"},
-INDIA={continent="Asia",city="New Delhi",flag="🇮🇳"},
-AUSTRALIA={continent="Oceania",city="Canberra",flag="🇦🇺"},
-EGYPT={continent="Africa",city="Cairo",flag="🇪🇬"},
-BRAZIL={continent="South America",city="Brasília",flag="🇧🇷"},
-AFGHANISTAN={continent="Asia",city="Kabul",flag="🇦🇫"},
-ALBANIA={continent="Europe",city="Tirana",flag="🇦🇱"},
-ALGERIA={continent="Africa",city="Algiers",flag="🇩🇿"},
-ANDORRA={continent="Europe",city="Andorra la Vella",flag="🇦🇩"},
-ANGOLA={continent="Africa",city="Luanda",flag="🇦🇴"},
-ANTIGUAANDBARBUDA={continent="North America",city="Saint John's",flag="🇦🇬"},
-ARGENTINA={continent="South America",city="Buenos Aires",flag="🇦🇷"},
-ARMENIA={continent="Asia",city="Yerevan",flag="🇦🇲"},
-AUSTRIA={continent="Europe",city="Vienna",flag="🇦🇹"},
-AZERBAIJAN={continent="Asia",city="Baku",flag="🇦🇿"},
-BAHAMAS={continent="North America",city="Nassau",flag="🇧🇸"},
-BAHRAIN={continent="Asia",city="Manama",flag="🇧🇭"},
-BANGLADESH={continent="Asia",city="Dhaka",flag="🇧🇩"},
-BARBADOS={continent="North America",city="Bridgetown",flag="🇧🇧"},
-BELARUS={continent="Europe",city="Minsk",flag="🇧/by"},
-BELGIUM={continent="Europe",city="Brussels",flag="🇧🇪"},
-BELIZE={continent="North America",city="Belmopan",flag="🇧🇿"},
-BENIN={continent="Africa",city="Porto-Novo",flag="🇧🇯"},
-BHUTAN={continent="Asia",city="Thimphu",flag="🇧🇹"},
-BOLIVIA={continent="South America",city="Sucre",flag="🇧🇴"},
-BOSNIAANDHERZEGOVINA={continent="Europe",city="Sarajevo",flag="🇧🇦"},
-BOTSWANA={continent="Africa",city="Gaborone",flag="🇧🇼"},
-BRAZIL={continent="South America",city="Brasília",flag="🇧🇷"},
-BRUNEI={continent="Asia",city="Bandar Seri Begawan",flag="🇧🇳"},
-BULGARIA={continent="Europe",city="Sofia",flag="🇧🇬"},
-BURKINAFASO={continent="Africa",city="Ouagadougou",flag="🇧🇫"},
-BURUNDI={continent="Africa",city="Gitega",flag="🇧🇮"},
-CAMBODIA={continent="Asia",city="Phnom Penh",flag="🇰🇭"},
-CAMEROON={continent="Africa",city="Yaoundé",flag="🇨🇲"},
-CANADA={continent="North America",city="Ottawa",flag="🇨🇦"},
-CAPEVERDE={continent="Africa",city="Praia",flag="🇨🇻"},
-CENTRALAFRICANREPUBLIC={continent="Africa",city="Bangui",flag="🇨🇫"},
-CHAD={continent="Africa",city="N'Djamena",flag="🇹🇩"},
-CHILE={continent="South America",city="Santiago",flag="🇨🇱"},
-CHINA={continent="Asia",city="Beijing",flag="🇨🇳"},
-COLOMBIA={continent="South America",city="Bogotá",flag="🇨🇴"},
-COMOROS={continent="Africa",city="Moroni",flag="🇰🇲"},
-CONGO={continent="Africa",city="Brazzaville",flag="🇨🇬"},
-COSTARICA={continent="North America",city="San José",flag="🇨🇷"},
-CROATIA={continent="Europe",city="Zagreb",flag="🇭🇷"},
-CUBA={continent="North America",city="Havana",flag="🇨🇺"},
-CYPRUS={continent="Asia",city="Nicosia",flag="🇨🇾"},
-CZECHREPUBLIC={continent="Europe",city="Prague",flag="🇨🇿"},
-COTEDIVOIRE={continent="Africa",city="Yamoussoukro",flag="🇨🇮"},
-CABOVERDE={continent="Africa",city="Praia",flag="🇨🇻"},
-DEMOCRATICREPUBLICOFTHECONGO={continent="Africa",city="Kinshasa",flag="🇨🇩"},
-DENMARK={continent="Europe",city="Copenhagen",flag="🇩🇰"},
-DJIBOUTI={continent="Africa",city="Djibouti",flag="🇩🇯"},
-DOMINICA={continent="North America",city="Roseau",flag="🇩🇲"},
-DOMINICANREPUBLIC={continent="North America",city="Santo Domingo",flag="🇩🇴"},
-EASTTIMOR={continent="Asia",city="Dili",flag="🇹🇱"},
-ECUADOR={continent="South America",city="Quito",flag="🇪🇨"},
-EGYPT={continent="Africa",city="Cairo",flag="🇪🇬"},
-ELSALVADOR={continent="North America",city="San Salvador",flag="🇸🇻"},
-EQUATORIALGUINEA={continent="Africa",city="Malabo",flag="🇬🇶"},
-ERITREA={continent="Africa",city="Asmara",flag="🇪🇷"},
-ESTONIA={continent="Europe",city="Tallinn",flag="🇪🇪"},
-ESWATINI={continent="Africa",city="Lobamba",flag="🇸🇿"},
-ETHIOPIA={continent="Africa",city="Addis Ababa",flag="🇪🇹"},
-FIJI={continent="Oceania",city="Suva",flag="🇫🇯"},
-FINLAND={continent="Europe",city="Helsinki",flag="🇫🇮"},
-FRANCE={continent="Europe",city="Paris",flag="🇫🇷"},
-GABON={continent="Africa",city="Libreville",flag="🇬🇦"},
-GAMBIA={continent="Africa",city="Banjul",flag="🇬🇲"},
-GEORGIA={continent="Asia",city="Tbilisi",flag="🇬🇪"},
-GERMANY={continent="Europe",city="Berlin",flag="🇩🇪"},
-GHANA={continent="Africa",city="Accra",flag="🇬🇭"},
-GREECE={continent="Europe",city="Athens",flag="🇬🇷"},
-GRENADA={continent="North America",city="St. George's",flag="🇬🇩"},
-GUATEMALA={continent="North America",city="Guatemala City",flag="🇬🇹"},
-GUINEA={continent="Africa",city="Conakry",flag="🇬🇳"},
-GUINEABISSAU={continent="Africa",city="Bissau",flag="🇬🇼"},
-GUYANA={continent="South America",city="Georgetown",flag="🇬🇾"},
-HAITI={continent="North America",city="Port-au-Prince",flag="🇭🇹"},
-HONDURAS={continent="North America",city="Tegucigalpa",flag="🇭🇳"},
-HUNGARY={continent="Europe",city="Budapest",flag="🇭🇺"},
-ICELAND={continent="Europe",city="Reykjavik",flag="🇮🇸"},
-INDIA={continent="Asia",city="New Delhi",flag="🇮🇳"},
-INDONESIA={continent="Asia",city="Jakarta",flag="🇮🇩"},
-IRAN={continent="Asia",city="Tehran",flag="🇮🇷"},
-IRAQ={continent="Asia",city="Baghdad",flag="🇮🇶"},
-IRELAND={continent="Europe",city="Dublin",flag="🇮🇪"},
-ISRAEL={continent="Asia",city="Jerusalem",flag="🇮🇱"},
-ITALY={continent="Europe",city="Rome",flag="🇮🇹"},
-IVORYCOAST={continent="Africa",city="Yamoussoukro",flag="🇨🇮"},
-JAMAICA={continent="North America",city="Kingston",flag="🇯🇲"},
-JAPAN={continent="Asia",city="Tokyo",flag="🇯🇵"},
-JORDAN={continent="Asia",city="Amman",flag="🇯🇴"},
-KAZAKHSTAN={continent="Asia",city="Astana",flag="🇰🇿"},
-KENYA={continent="Africa",city="Nairobi",flag="🇰🇪"},
-KIRIBATI={continent="Oceania",city="South Tarawa",flag="🇰🇮"},
-KOSOVO={continent="Europe",city="Pristina",flag="🇽🇰"},
-KUWAIT={continent="Asia",city="Kuwait City",flag="🇰🇼"},
-KYRGYZSTAN={continent="Asia",city="Bishkek",flag="🇰🇬"},
-LAOS={continent="Asia",city="Vientiane",flag="🇱🇦"},
-LATVIA={continent="Europe",city="Riga",flag="🇱🇻"},
-LEBANON={continent="Asia",city="Beirut",flag="🇱🇧"},
-LESOTHO={continent="Africa",city="Maseru",flag="🇱🇸"},
-LIBERIA={continent="Africa",city="Monrovia",flag="🇱🇷"},
-LIBYA={continent="Africa",city="Tripoli",flag="🇱🇾"},
-LIECHTENSTEIN={continent="Europe",city="Vaduz",flag="🇱🇮"},
-LITHUANIA={continent="Europe",city="Vilnius",flag="🇱🇹"},
-LUXEMBOURG={continent="Europe",city="Luxembourg",flag="🇱🇺"},
-MADAGASCAR={continent="Africa",city="Antananarivo",flag="🇲🇬"},
-MALAWI={continent="Africa",city="Lilongwe",flag="🇲🇼"},
-MALAYSIA={continent="Asia",city="Kuala Lumpur",flag="🇲🇾"},
-MALDIVES={continent="Asia",city="Malé",flag="🇲🇻"},
-MALI={continent="Africa",city="Bamako",flag="🇲🇱"},
-MALTA={continent="Europe",city="Valletta",flag="🇲🇹"},
-MARSHALLISLANDS={continent="Oceania",city="Majuro",flag="🇲🇭"},
-MAURITANIA={continent="Africa",city="Nouakchott",flag="🇲🇷"},
-MAURITIUS={continent="Africa",city="Port Louis",flag="🇲🇺"},
-MEXICO={continent="North America",city="Mexico City",flag="🇲🇽"},
-MICRONESIA={continent="Oceania",city="Palikir",flag="🇫🇲"},
-MOLDOVA={continent="Europe",city="Chisinau",flag="🇲🇩"},
-MONACO={continent="Europe",city="Monaco",flag="🇲🇨"},
-MONGOLIA={continent="Asia",city="Ulaanbaatar",flag="🇲🇳"},
-MONTENEGRO={continent="Europe",city="Podgorica",flag="🇲🇪"},
-MOROCCO={continent="Africa",city="Rabat",flag="🇲🇦"},
-MOZAMBIQUE={continent="Africa",city="Maputo",flag="🇲🇿"},
-MYANMAR={continent="Asia",city="Naypyidaw",flag="🇲🇲"},
-NAMIBIA={continent="Africa",city="Windhoek",flag="🇳🇦"},
-NAURU={continent="Oceania",city="Yaren",flag="🇳🇷"},
-NEPAL={continent="Asia",city="Kathmandu",flag="🇳🇵"},
-NETHERLANDS={continent="Europe",city="Amsterdam",flag="🇳🇱"},
-NEWZEALAND={continent="Oceania",city="Wellington",flag="🇳🇿"},
-NICARAGUA={continent="North America",city="Managua",flag="🇳🇮"},
-NIGER={continent="Africa",city="Niamey",flag="🇳🇪"},
-NIGERIA={continent="Africa",city="Abuja",flag="🇳🇬"},
-NORTHKOREA={continent="Asia",city="Pyongyang",flag="🇰🇵"},
-NORTHMACEDONIA={continent="Europe",city="Skopje",flag="🇲🇰"},
-NORWAY={continent="Europe",city="Oslo",flag="🇳🇴"},
-OMAN={continent="Asia",city="Muscat",flag="🇴🇲"},
-PAKISTAN={continent="Asia",city="Islamabad",flag="🇵🇰"},
-PALAU={continent="Oceania",city="Ngerulmud",flag="🇵🇼"},
-PALESTINE={continent="Asia",city="East Jerusalem",flag="🇵🇸"},
-PANAMA={continent="North America",city="Panama City",flag="🇵🇦"},
-PAPUANEWGUINEA={continent="Oceania",city="Port Moresby",flag="🇵🇬"},
-PARAGUAY={continent="South America",city="Asunción",flag="🇵🇾"},
-PERU={continent="South America",city="Lima",flag="🇵🇪"},
-PHILIPPINES={continent="Asia",city="Manila",flag="🇵🇭"},
-POLAND={continent="Europe",city="Warsaw",flag="🇵🇱"},
-PORTUGAL={continent="Europe",city="Lisbon",flag="🇵🇹"},
-QATAR={continent="Asia",city="Doha",flag="🇶🇦"},
-ROMANIA={continent="Europe",city="Bucharest",flag="🇷🇴"},
-RUSSIA={continent="Europe/Asia",city="Moscow",flag="🇷🇺"},
-RWANDA={continent="Africa",city="Kigali",flag="🇷🇼"},
-SAINTKITTSANDNEVIS={continent="North America",city="Basseterre",flag="🇰🇳"},
-SAINTLUCIA={continent="North America",city="Castries",flag="🇱🇨"},
-SAINTVINCENTANDTHEGRENADINES={continent="North America",city="Kingstown",flag="🇻🇨"},
-SAMOA={continent="Oceania",city="Apia",flag="🇼🇸"},
-SANMARINO={continent="Europe",city="San Marino",flag="🇸🇲"},
-SAOTOMEANDPRINCIPE={continent="Africa",city="São Tomé",flag="🇸🇹"},
-SAUDIARABIA={continent="Asia",city="Riyadh",flag="🇸🇦"},
-SENEGAL={continent="Africa",city="Dakar",flag="🇸🇳"},
-SERBIA={continent="Europe",city="Belgrade",flag="🇷🇸"},
-SEYCHELLES={continent="Africa",city="Victoria",flag="🇸🇨"},
-SIERRALEONE={continent="Africa",city="Freetown",flag="🇸🇱"},
-SINGAPORE={continent="Asia",city="Singapore",flag="🇸🇬"},
-SLOVAKIA={continent="Europe",city="Bratislava",flag="🇸🇰"},
-SLOVENIA={continent="Europe",city="Ljubljana",flag="🇸🇮"},
-SOLOMONISLANDS={continent="Oceania",city="Honiara",flag="🇸🇧"},
-SOMALIA={continent="Africa",city="Mogadishu",flag="🇸🇴"},
-SOUTHAFRICA={continent="Africa",city="Cape Town",flag="🇿🇦"},
-SOUTHKOREA={continent="Asia",city="Seoul",flag="🇰🇷"},
-SOUTHSUDAN={continent="Africa",city="Juba",flag="🇸🇸"},
-SPAIN={continent="Europe",city="Madrid",flag="🇪🇸"},
-SRILANKA={continent="Asia",city="Colombo",flag="🇱🇰"},
-SUDAN={continent="Africa",city="Khartoum",flag="🇸🇩"},
-SURINAME={continent="South America",city="Paramaribo",flag="🇸🇷"},
-SWEDEN={continent="Europe",city="Stockholm",flag="🇸🇪"},
-SWITZERLAND={continent="Europe",city="Bern",flag="🇨🇭"},
-SYRIA={continent="Asia",city="Damascus",flag="🇸🇾"},
-TAIWAN={continent="Asia",city="Taipei",flag="🇹🇼"},
-TAJIKISTAN={continent="Asia",city="Dushanbe",flag="🇹🇯"},
-TANZANIA={continent="Africa",city="Dodoma",flag="🇹🇿"},
-THAILAND={continent="Asia",city="Bangkok",flag="🇹🇭"},
-TIMORLESTE={continent="Asia",city="Dili",flag="🇹🇱"},
-TOGO={continent="Africa",city="Lome",flag="🇹🇬"},
-TONGA={continent="Oceania",city="Nuku'alofa",flag="🇹🇴"},
-TRINIDADANDTOBAGO={continent="North America",city="Port of Spain",flag="🇹🇹"},
-TUNISIA={continent="Africa",city="Tunis",flag="🇹🇳"},
-TURKEY={continent="Europe/Asia",city="Ankara",flag="🇹🇷"},
-TURKMENISTAN={continent="Asia",city="Ashgabat",flag="🇹🇲"},
-TUVALU={continent="Oceania",city="Funafuti",flag="🇹🇻"},
-UGANDA={continent="Africa",city="Kampala",flag="🇺🇬"},
-UKRAINE={continent="Europe",city="Kyiv",flag="🇺🇦"},
-UNITEDARABEMIRATES={continent="Asia",city="Abu Dhabi",flag="🇦🇪"},
-UNITEDKINGDOM={continent="Europe",city="London",flag="🇬🇧"},
-UNITEDSTATES={continent="North America",city="Washington, D.C.",flag="🇺🇸"},
-URUGUAY={continent="South America",city="Montevideo",flag="🇺🇾"},
-UZBEKISTAN={continent="Asia",city="Tashkent",flag="🇺🇿"},
-VANUATU={continent="Oceania",city="Port Vila",flag="🇻🇺"},
-VATICANCITY={continent="Europe",city="Vatican City",flag="🇻🇦"},
-VENEZUELA={continent="South America",city="Caracas",flag="🇻🇪"},
-VIETNAM={continent="Asia",city="Hanoi",flag="🇻🇳"},
-YEMEN={continent="Asia",city="Sana'a",flag="🇾🇪"},
-ZAMBIA={continent="Africa",city="Lusaka",flag="🇿🇲"},
-ZIMBABWE={continent="Africa",city="Harare",flag="🇿🇼"}
+    -- ASIA
+    AFGHANISTAN={continent="Asia",city="Kabul",flag="🇦🇫",currency="Afghani"},
+    ARMENIA={continent="Asia",city="Yerevan",flag="🇦🇲",currency="Dram"},
+    AZERBAIJAN={continent="Asia",city="Baku",flag="🇦🇿",currency="Manat"},
+    BAHRAIN={continent="Asia",city="Manama",flag="🇧🇭",currency="Dinar"},
+    BANGLADESH={continent="Asia",city="Dhaka",flag="🇧🇩",currency="Taka"},
+    BHUTAN={continent="Asia",city="Thimphu",flag="🇧🇹",currency="Ngultrum"},
+    BRUNEI={continent="Asia",city="Bandar Seri Begawan",flag="🇧🇳",currency="Dollar"},
+    CAMBODIA={continent="Asia",city="Phnom Penh",flag="🇰🇭",currency="Riel"},
+    CHINA={continent="Asia",city="Beijing",flag="🇨🇳",currency="Yuan"},
+    CYPRUS={continent="Asia",city="Nicosia",flag="🇨🇾",currency="Euro"},
+    GEORGIA={continent="Asia",city="Tbilisi",flag="🇬🇪",currency="Lari"},
+	EASTTIMOR={continent="Asia",city="Dili",flag="🇹🇱",currency="Dollar"},
+    INDIA={continent="Asia",city="New Delhi",flag="🇮🇳",currency="Rupee"},
+    INDONESIA={continent="Asia",city="Jakarta",flag="🇮🇩",currency="Rupiah"},
+    IRAN={continent="Asia",city="Tehran",flag="🇮🇷",currency="Rial"},
+    IRAQ={continent="Asia",city="Baghdad",flag="🇮🇶",currency="Dinar"},
+    ISRAEL={continent="Asia",city="Jerusalem",flag="🇮🇱",currency="Shekel"},
+    JAPAN={continent="Asia",city="Tokyo",flag="🇯🇵",currency="Yen"},
+    JORDAN={continent="Asia",city="Amman",flag="🇯🇴",currency="Dinar"},
+    KAZAKHSTAN={continent="Asia",city="Astana",flag="🇰🇿",currency="Tenge"},
+    KUWAIT={continent="Asia",city="Kuwait City",flag="🇰🇼",currency="Dinar"},
+    KYRGYZSTAN={continent="Asia",city="Bishkek",flag="🇰🇬",currency="Som"},
+    LAOS={continent="Asia",city="Vientiane",flag="🇱🇦",currency="Kip"},
+    LEBANON={continent="Asia",city="Beirut",flag="🇱🇧",currency="Pound"},
+    MALAYSIA={continent="Asia",city="Kuala Lumpur",flag="🇲🇾",currency="Ringgit"},
+    MALDIVES={continent="Asia",city="Male",flag="🇲🇻",currency="Rufiyaa"},
+    MONGOLIA={continent="Asia",city="Ulaanbaatar",flag="🇲🇳",currency="Togrog"},
+    MYANMAR={continent="Asia",city="Naypyidaw",flag="🇲🇲",currency="Kyat"},
+    NEPAL={continent="Asia",city="Kathmandu",flag="🇳🇵",currency="Rupee"},
+    NORTHKOREA={continent="Asia",city="Pyongyang",flag="🇰🇵",currency="Won"},
+    OMAN={continent="Asia",city="Muscat",flag="🇴🇲",currency="Rial"},
+    PAKISTAN={continent="Asia",city="Islamabad",flag="🇵🇰",currency="Rupee"},
+    PHILIPPINES={continent="Asia",city="Manila",flag="🇵🇭",currency="Peso"},
+    QATAR={continent="Asia",city="Doha",flag="🇶🇦",currency="Rial"},
+    SAUDIARABIA={continent="Asia",city="Riyadh",flag="🇸🇦",currency="Riyal"},
+    SINGAPORE={continent="Asia",city="Singapore",flag="🇸🇬",currency="Dollar"},
+    SOUTHKOREA={continent="Asia",city="Seoul",flag="🇰🇷",currency="Won"},
+    SRILANKA={continent="Asia",city="Colombo",flag="🇱🇰",currency="Rupee"},
+    SYRIA={continent="Asia",city="Damascus",flag="🇸🇾",currency="Pound"},
+    TAIWAN={continent="Asia",city="Taipei",flag="🇹🇼",currency="Dollar"},
+    TAJIKISTAN={continent="Asia",city="Dushanbe",flag="🇹🇯",currency="Somoni"},
+    THAILAND={continent="Asia",city="Bangkok",flag="🇹🇭",currency="Baht"},
+    TURKEY={continent="Asia",city="Ankara",flag="🇹🇷",currency="Lira"},
+    TURKMENISTAN={continent="Asia",city="Ashgabat",flag="🇹🇲",currency="Manat"},
+    UAE={continent="Asia",city="Abu Dhabi",flag="🇦🇪",currency="Dirham"},
+	UNITEDARABEMIRATES={continent="Asia",city="Abu Dhabi",flag="🇦🇪",currency="Dirham"},
+    UZBEKISTAN={continent="Asia",city="Tashkent",flag="🇺🇿",currency="Som"},
+    VIETNAM={continent="Asia",city="Hanoi",flag="🇻🇳",currency="Dong"},
+    TIMORLESTE={continent="Asia",city="Dili",flag="🇹🇱",currency="Dollar"},
+    YEMEN={continent="Asia",city="Sana'a",flag="🇾🇪",currency="Rial"},
+
+    -- EUROPE
+    ALBANIA={continent="Europe",city="Tirana",flag="🇦🇱",currency="Lek"},
+    ANDORRA={continent="Europe",city="Andorra la Vella",flag="🇦🇩",currency="Euro"},
+    AUSTRIA={continent="Europe",city="Vienna",flag="🇦🇹",currency="Euro"},
+    BELARUS={continent="Europe",city="Minsk",flag="🇧🇾",currency="Ruble"},
+    BELGIUM={continent="Europe",city="Brussels",flag="🇧🇪",currency="Euro"},
+    BULGARIA={continent="Europe",city="Sofia",flag="🇧🇬",currency="Lev"},
+	BOSNIANDHERZEGOVINA={continent="Europe",city="Sarajevo",flag="🇧🇦",currency="Convertible Mark"},
+	KOSOVO={continent="Europe",city="Pristina",flag="🇽🇰",currency="Euro"},
+    CROATIA={continent="Europe",city="Zagreb",flag="🇭🇷",currency="Euro"},
+    CZECHREPUBLIC={continent="Europe",city="Prague",flag="🇨🇿",currency="Koruna"},
+    DENMARK={continent="Europe",city="Copenhagen",flag="🇩🇰",currency="Krone"},
+    ESTONIA={continent="Europe",city="Tallinn",flag="🇪🇪",currency="Euro"},
+    FINLAND={continent="Europe",city="Helsinki",flag="🇫🇮",currency="Euro"},
+    FRANCE={continent="Europe",city="Paris",flag="🇫🇷",currency="Euro"},
+    GERMANY={continent="Europe",city="Berlin",flag="🇩🇪",currency="Euro"},
+    GREECE={continent="Europe",city="Athens",flag="🇬🇷",currency="Euro"},
+    HUNGARY={continent="Europe",city="Budapest",flag="🇭🇺",currency="Forint"},
+    ICELAND={continent="Europe",city="Reykjavik",flag="🇮🇸",currency="Krona"},
+    IRELAND={continent="Europe",city="Dublin",flag="🇮🇪",currency="Euro"},
+    ITALY={continent="Europe",city="Rome",flag="🇮🇹",currency="Euro"},
+    LATVIA={continent="Europe",city="Riga",flag="🇱🇻",currency="Euro"},
+    LITHUANIA={continent="Europe",city="Vilnius",flag="🇱🇹",currency="Euro"},
+    LUXEMBOURG={continent="Europe",city="Luxembourg",flag="🇱🇺",currency="Euro"},
+    MALTA={continent="Europe",city="Valletta",flag="🇲🇹",currency="Euro"},
+    MONACO={continent="Europe",city="Monaco",flag="🇲🇨",currency="Euro"},
+    NETHERLANDS={continent="Europe",city="Amsterdam",flag="🇳🇱",currency="Euro"},
+    NORWAY={continent="Europe",city="Oslo",flag="🇳🇴",currency="Krone"},
+    POLAND={continent="Europe",city="Warsaw",flag="🇵🇱",currency="Zloty"},
+    PORTUGAL={continent="Europe",city="Lisbon",flag="🇵🇹",currency="Euro"},
+    ROMANIA={continent="Europe",city="Bucharest",flag="🇷🇴",currency="Leu"},
+    RUSSIA={continent="Europe/Asia",city="Moscow",flag="🇷🇺",currency="Ruble"},
+    SPAIN={continent="Europe",city="Madrid",flag="🇪🇸",currency="Euro"},
+    SWEDEN={continent="Europe",city="Stockholm",flag="🇸🇪",currency="Krona"},
+    SWITZERLAND={continent="Europe",city="Bern",flag="🇨🇭",currency="Franc"},
+    UKRAINE={continent="Europe",city="Kyiv",flag="🇺🇦",currency="Hryvnia"},
+    UNITEDKINGDOM={continent="Europe",city="London",flag="🇬🇧",currency="Pound"},
+    BOSNIAANDHERZEGOVINA={continent="Europe",city="Sarajevo",flag="🇧🇦",currency="Convertible Mark"},
+    KOSOVO={continent="Europe",city="Pristina",flag="🇽🇰",currency="Euro"},
+    LIECHTENSTEIN={continent="Europe",city="Vaduz",flag="🇱🇮",currency="Franc"},
+    MOLDOVA={continent="Europe",city="Chisinau",flag="🇲🇩",currency="Leu"},
+    MONTENEGRO={continent="Europe",city="Podgorica",flag="🇲🇪",currency="Euro"},
+    NORTHMACEDONIA={continent="Europe",city="Skopje",flag="🇲🇰",currency="Denar"},
+    SANMARINO={continent="Europe",city="San Marino",flag="🇸🇲",currency="Euro"},
+    SERBIA={continent="Europe",city="Belgrade",flag="🇷🇸",currency="Dinar"},
+    SLOVAKIA={continent="Europe",city="Bratislava",flag="🇸🇰",currency="Euro"},
+    SLOVENIA={continent="Europe",city="Ljubljana",flag="🇸🇮",currency="Euro"},
+    VATICANCITY={continent="Europe",city="Vatican City",flag="🇻🇦",currency="Euro"},
+
+    -- NORTH AMERICA
+    BAHAMAS={continent="North America",city="Nassau",flag="🇧🇸",currency="Dollar"},
+	BARBADOS={continent="North America",city="Bridgetown",flag="🇧🇧",currency="Dollar"},
+    CANADA={continent="North America",city="Ottawa",flag="🇨🇦",currency="Dollar"},
+    COSTARICA={continent="North America",city="San Jose",flag="🇨🇷",currency="Colon"},
+    CUBA={continent="North America",city="Havana",flag="🇨🇺",currency="Peso"},
+    DOMINICANREPUBLIC={continent="North America",city="Santo Domingo",flag="🇩🇴",currency="Peso"},
+    DOMINICA={continent="North America",city="Roseau",flag="🇩🇲",currency="Dollar"},
+    ELSALVADOR={continent="North America",city="San Salvador",flag="🇸🇻",currency="Dollar"},
+    GRENADA={continent="North America",city="St. George's",flag="🇬🇩",currency="Dollar"},
+    GUATEMALA={continent="North America",city="Guatemala City",flag="🇬🇹",currency="Quetzal"},
+    NICARAGUA={continent="North America",city="Managua",flag="🇳🇮",currency="Cordoba"},
+    SAINTKITTSANDNEVIS={continent="North America",city="Basseterre",flag="🇰🇳",currency="Dollar"},
+    SAINTLUCIA={continent="North America",city="Castries",flag="🇱🇨",currency="Dollar"},
+    SAINTVINCENTANDTHEGRENADINES={continent="North America",city="Kingstown",flag="🇻🇨",currency="Dollar"},
+    TRINIDADANDTOBAGO={continent="North America",city="Port of Spain",flag="🇹🇹",currency="Dollar"},
+    HAITI={continent="North America",city="Port-au-Prince",flag="🇭🇹",currency="Gourde"},
+    HONDURAS={continent="North America",city="Tegucigalpa",flag="🇭🇳",currency="Lempira"},
+    JAMAICA={continent="North America",city="Kingston",flag="🇯🇲",currency="Dollar"},
+    MEXICO={continent="North America",city="Mexico City",flag="🇲🇽",currency="Peso"},
+    PANAMA={continent="North America",city="Panama City",flag="🇵🇦",currency="Balboa"},
+    UNITEDSTATES={continent="North America",city="Washington D.C.",flag="🇺🇸",currency="Dollar"},
+
+    -- SOUTH AMERICA
+    ARGENTINA={continent="South America",city="Buenos Aires",flag="🇦🇷",currency="Peso"},
+    BOLIVIA={continent="South America",city="Sucre",flag="🇧🇴",currency="Boliviano"},
+    BRAZIL={continent="South America",city="Brasilia",flag="🇧🇷",currency="Real"},
+	BELIZE={continent="South America",city="Belmopan",flag="🇧🇿",currency="Dollar"},
+    CHILE={continent="South America",city="Santiago",flag="🇨🇱",currency="Peso"},
+    COLOMBIA={continent="South America",city="Bogota",flag="🇨🇴",currency="Peso"},
+    ECUADOR={continent="South America",city="Quito",flag="🇪🇨",currency="Dollar"},
+    PARAGUAY={continent="South America",city="Asuncion",flag="🇵🇾",currency="Guarani"},
+    PERU={continent="South America",city="Lima",flag="🇵🇪",currency="Sol"},
+    URUGUAY={continent="South America",city="Montevideo",flag="🇺🇾",currency="Peso"},
+    VENEZUELA={continent="South America",city="Caracas",flag="🇻🇪",currency="Bolivar"},
+    GUYANA={continent="South America",city="Georgetown",flag="🇬🇾",currency="Dollar"},
+    SURINAME={continent="South America",city="Paramaribo",flag="🇸🇷",currency="Dollar"},
+
+    -- AFRICA
+    ALGERIA={continent="Africa",city="Algiers",flag="🇩🇿",currency="Dinar"},
+	SAOTOMEANDPRINCIPE={continent="Africa",city="Sao Tome",flag="🇸🇹",currency="Dobra"},
+    ANGOLA={continent="Africa",city="Luanda",flag="🇦🇴",currency="Kwanza"},
+	ATIGUANDBARBUDA={continent="Africa",city="St. John's",flag="🇦🇬",currency="Dollar"},
+	COMOROS={continent="Africa",city="Moroni",flag="🇰🇲",currency="Franc"},
+	CABOVERDE={continent="Africa",city="Praia",flag="🇨🇻",currency="Escudo"},
+    CAMEROON={continent="Africa",city="Yaounde",flag="🇨🇲",currency="Franc"},
+    EGYPT={continent="Africa",city="Cairo",flag="🇪🇬",currency="Pound"},
+    ETHIOPIA={continent="Africa",city="Addis Ababa",flag="🇪🇹",currency="Birr"},
+    GHANA={continent="Africa",city="Accra",flag="🇬🇭",currency="Cedi"},
+    KENYA={continent="Africa",city="Nairobi",flag="🇰🇪",currency="Shilling"},
+    MOROCCO={continent="Africa",city="Rabat",flag="🇲🇦",currency="Dirham"},
+    NIGERIA={continent="Africa",city="Abuja",flag="🇳🇬",currency="Naira"},
+    SOUTHAFRICA={continent="Africa",city="Pretoria",flag="🇿🇦",currency="Rand"},
+    TANZANIA={continent="Africa",city="Dodoma",flag="🇹🇿",currency="Shilling"},
+    UGANDA={continent="Africa",city="Kampala",flag="🇺🇬",currency="Shilling"},
+    BENIN={continent="Africa",city="Porto Novo",flag="🇧🇯",currency="Franc"},
+    BOTSWANA={continent="Africa",city="Gaborone",flag="🇧🇼",currency="Pula"},
+    BURKINAFASO={continent="Africa",city="Ouagadougou",flag="🇧🇫",currency="Franc"},
+    BURUNDI={continent="Africa",city="Gitega",flag="🇧🇮",currency="Franc"},
+    CAPEVERDE={continent="Africa",city="Praia",flag="🇨🇻",currency="Escudo"},
+    CENTRALAFRICANREPUBLIC={continent="Africa",city="Bangui",flag="🇨🇫",currency="Franc"},
+	IVORYCOAST={continent="Africa",city="Yamoussoukro",flag="🇨🇮",currency="Franc"},
+    CHAD={continent="Africa",city="N'Djamena",flag="🇹🇩",currency="Franc"},
+    CONGO={continent="Africa",city="Brazzaville",flag="🇨🇬",currency="Franc"},
+    DEMOCRATICREPUBLICOFTHECONGO={continent="Africa",city="Kinshasa",flag="🇨🇩",currency="Franc"},
+    DJIBOUTI={continent="Africa",city="Djibouti",flag="🇩🇯",currency="Franc"},
+    EQUATORIALGUINEA={continent="Africa",city="Malabo",flag="🇬🇶",currency="Franc"},
+    ERITREA={continent="Africa",city="Asmara",flag="🇪🇷",currency="Nakfa"},
+    ESWATINI={continent="Africa",city="Mbabane",flag="🇸🇿",currency="Lilangeni"},
+    GABON={continent="Africa",city="Libreville",flag="🇬🇦",currency="Franc"},
+    GAMBIA={continent="Africa",city="Banjul",flag="🇬🇲",currency="Dalasi"},
+    GUINEA={continent="Africa",city="Conakry",flag="🇬🇳",currency="Franc"},
+    GUINEABISSAU={continent="Africa",city="Bissau",flag="🇬🇼",currency="Franc"},
+    COTEDIVOIRE={continent="Africa",city="Yamoussoukro",flag="🇨🇮",currency="Franc"},
+    LESOTHO={continent="Africa",city="Maseru",flag="🇱🇸",currency="Loti"},
+    LIBERIA={continent="Africa",city="Monrovia",flag="🇱🇷",currency="Dollar"},
+    LIBYA={continent="Africa",city="Tripoli",flag="🇱🇾",currency="Dinar"},
+    MADAGASCAR={continent="Africa",city="Antananarivo",flag="🇲🇬",currency="Ariary"},
+    MALAWI={continent="Africa",city="Lilongwe",flag="🇲🇼",currency="Kwacha"},
+    MALI={continent="Africa",city="Bamako",flag="🇲🇱",currency="Franc"},
+    MAURITANIA={continent="Africa",city="Nouakchott",flag="🇲🇷",currency="Ouguiya"},
+    MAURITIUS={continent="Africa",city="Port Louis",flag="🇲🇺",currency="Rupee"},
+    MOZAMBIQUE={continent="Africa",city="Maputo",flag="🇲🇿",currency="Metical"},
+    NAMIBIA={continent="Africa",city="Windhoek",flag="🇳🇦",currency="Dollar"},
+    NIGER={continent="Africa",city="Niamey",flag="🇳🇪",currency="Franc"},
+    RWANDA={continent="Africa",city="Kigali",flag="🇷🇼",currency="Franc"},
+    SENEGAL={continent="Africa",city="Dakar",flag="🇸🇳",currency="Franc"},
+    SEYCHELLES={continent="Africa",city="Victoria",flag="🇸🇨",currency="Rupee"},
+    SIERRALEONE={continent="Africa",city="Freetown",flag="🇸🇱",currency="Leone"},
+    SOMALIA={continent="Africa",city="Mogadishu",flag="🇸🇴",currency="Shilling"},
+    SOUTHSUDAN={continent="Africa",city="Juba",flag="🇸🇸",currency="Pound"},
+    SUDAN={continent="Africa",city="Khartoum",flag="🇸🇩",currency="Pound"},
+    TUNISIA={continent="Africa",city="Tunis",flag="🇹🇳",currency="Dinar"},
+	TOGO={continent="Africa",city="Lome",flag="🇹🇬",currency="Franc"},
+    ZAMBIA={continent="Africa",city="Lusaka",flag="🇿🇲",currency="Kwacha"},
+    ZIMBABWE={continent="Africa",city="Harare",flag="🇿🇼",currency="Dollar"},
+
+    -- OCEANIA
+    AUSTRALIA={continent="Oceania",city="Canberra",flag="🇦🇺",currency="Dollar"},
+    FIJI={continent="Oceania",city="Suva",flag="🇫🇯",currency="Dollar"},
+    NEWZEALAND={continent="Oceania",city="Wellington",flag="🇳🇿",currency="Dollar"},
+    PAPUANEWGUINEA={continent="Oceania",city="Port Moresby",flag="🇵🇬",currency="Kina"},
+    KIRIBATI={continent="Oceania",city="Tarawa",flag="🇰🇮",currency="Dollar"},
+    MARSHALLISLANDS={continent="Oceania",city="Majuro",flag="🇲🇭",currency="Dollar"},
+    MICRONESIA={continent="Oceania",city="Palikir",flag="🇫🇲",currency="Dollar"},
+    NAURU={continent="Oceania",city="Yaren",flag="🇳🇷",currency="Dollar"},
+    PALAU={continent="Oceania",city="Ngerulmud",flag="🇵🇼",currency="Dollar"},
+    SAMOA={continent="Oceania",city="Apia",flag="🇼🇸",currency="Tala"},
+    SOLOMONISLANDS={continent="Oceania",city="Honiara",flag="🇸🇧",currency="Dollar"},
+    TONGA={continent="Oceania",city="Nuku'alofa",flag="🇹🇴",currency="Paanga"},
+    TUVALU={continent="Oceania",city="Funafuti",flag="🇹🇻",currency="Dollar"},
+    VANUATU={continent="Oceania",city="Port Vila",flag="🇻🇺",currency="Vatu"}
 }
+
 
 ----------------------------------------------------
 -- CLEAN
@@ -269,7 +316,7 @@ local function clean(str)
 end
 
 ----------------------------------------------------
--- SCORE AI
+-- SCORE
 ----------------------------------------------------
 local function score(a,b)
 	a,b=clean(a),clean(b)
@@ -284,39 +331,91 @@ local function score(a,b)
 end
 
 ----------------------------------------------------
--- UI CLEANUP
+-- UI
 ----------------------------------------------------
 pcall(function()
-	game.CoreGui.GoogleUI:Destroy()
+	game.CoreGui:FindFirstChild("GoogleUI"):Destroy()
 end)
 
-local gui=Instance.new("ScreenGui",game.CoreGui)
-gui.Name="GoogleUI"
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "GoogleUI"
 
 ----------------------------------------------------
--- MAIN FRAME (SMALL + CLEAN)
+-- MAIN FRAME
 ----------------------------------------------------
-local frame=Instance.new("Frame",gui)
-frame.Size=UDim2.new(0,420,0,320)
-frame.Position=UDim2.new(0.5,0,0.5,0)
-frame.AnchorPoint=Vector2.new(0.5,0.5)
-frame.BackgroundColor3=Color3.fromRGB(245,245,245) -- light UI (GOOGLE STYLE)
-frame.Active=true
-frame.Draggable=true
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0,420,0,320)
+frame.Position = UDim2.new(0.5,0,0.5,0)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundColor3 = Color3.fromRGB(245,245,245)
+frame.Active = true
+frame.Draggable = true
 
-Instance.new("UICorner",frame).CornerRadius=UDim.new(0,10)
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0,10)
 
 ----------------------------------------------------
 -- TITLE
 ----------------------------------------------------
-local title=Instance.new("TextLabel",frame)
-title.Size=UDim2.new(1,0,0,35)
-title.BackgroundTransparency=1
-title.Text="🔎 JOHN.EXE V1"
-title.Font=Enum.Font.GothamBold
-title.TextSize=18
-title.TextColor3=Color3.fromRGB(50,50,50)
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1,0,0,35)
+title.BackgroundTransparency = 1
+title.Text = "🔎 JOHN.EXE V1"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.TextColor3 = Color3.fromRGB(50,50,50)
 
+----------------------------------------------------
+-- CLOSE BUTTON
+----------------------------------------------------
+local closeBtn = Instance.new("TextButton", frame)
+closeBtn.Size = UDim2.new(0,30,0,30)
+closeBtn.Position = UDim2.new(1,-40,0,5)
+closeBtn.Text = "❌"
+closeBtn.BackgroundColor3 = Color3.fromRGB(180,50,50)
+closeBtn.TextColor3 = Color3.new(1,1,1)
+closeBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", closeBtn)
+
+----------------------------------------------------
+-- MINIMIZE BUTTON
+----------------------------------------------------
+local minBtn = Instance.new("TextButton", frame)
+minBtn.Size = UDim2.new(0,30,0,30)
+minBtn.Position = UDim2.new(1,-80,0,5)
+minBtn.Text = "➖"
+minBtn.BackgroundColor3 = Color3.fromRGB(80,80,80)
+minBtn.TextColor3 = Color3.new(1,1,1)
+minBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", minBtn)
+
+----------------------------------------------------
+-- MINIMIZE LOGIC (FIXED)
+----------------------------------------------------
+local minimized = false
+local fullSize = frame.Size
+
+minBtn.MouseButton1Click:Connect(function()
+	minimized = not minimized
+
+	if minimized then
+		frame.Size = UDim2.new(0,420,0,40)
+		title.Visible = true
+	else
+		frame.Size = fullSize
+	end
+
+	for _,v in ipairs(frame:GetChildren()) do
+		if v:IsA("TextBox") or v:IsA("Frame") and v ~= closeBtn and v ~= minBtn then
+			v.Visible = not minimized
+		end
+	end
+end)
+----------------------------------------------------
+-- CLOSE
+----------------------------------------------------
+closeBtn.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
 ----------------------------------------------------
 -- SEARCH BAR (CLEAN WHITE STYLE)
 ----------------------------------------------------
@@ -416,9 +515,9 @@ local function makeCard(country,rank)
 	s.TextColor3=Color3.fromRGB(120,120,120)
 
 	if d then
-		s.Text=" "..d.flag.." "..d.continent.." • "..d.city.." • "..#clean(country).." letters"
+		s.Text=" "..d.flag.." "..d.continent.." • "..d.city.." • " ..d.currency.. " • "..#clean(country).." letters"
 	else
-		s.Text=" 🌍 Unknown"
+		s.Text=" 🌍 No Data Available"
 	end
 end
 
@@ -508,4 +607,16 @@ searchBar:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 
 	results.CanvasSize = UDim2.new(0,0,0,#resultList * 50)
+end)
+
+end
+
+submit.MouseButton1Click:Connect(function()
+	if keyBox.Text == CORRECT_KEY then
+		keyGui:Destroy()
+		LoadMainUI()
+	else
+		keyBox.Text = ""
+		keyBox.PlaceholderText = "Wrong key, try again"
+	end
 end)
