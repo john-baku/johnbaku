@@ -1,41 +1,30 @@
-local TweenService = game:GetService("TweenService")
+--[[
+    SYSTEM: BOT-ONLY KEY SYSTEM (Junkie Dev Edition)
+    FIX: Stripped all citation markers to prevent parsing errors
+]]
+
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
+-- Compatibility Bridge for executors
+local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
 ----------------------------------------------------
--- KEY SYSTEM
+-- CONFIGURATION
 ----------------------------------------------------
-local CORRECT_KEY = "NIGHTSPENDERX"
+local API_URL = "https://worker-production-b5aa.up.railway.app/verify"
 
-local keyGui = Instance.new("ScreenGui", game.CoreGui)
-keyGui.Name = "KeySystem"
-
-local keyFrame = Instance.new("Frame", keyGui)
-keyFrame.Size = UDim2.new(0, 300, 0, 150)
-keyFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-keyFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-keyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-
-Instance.new("UICorner", keyFrame)
-
-local keyBox = Instance.new("TextBox", keyFrame)
-keyBox.Size = UDim2.new(0.8, 0, 0, 40)
-keyBox.Position = UDim2.new(0.1, 0, 0.2, 0)
-keyBox.PlaceholderText = "Enter Key..."
-keyBox.Text = ""
-keyBox.Font = Enum.Font.Gotham
-keyBox.TextSize = 16
-
-local submit = Instance.new("TextButton", keyFrame)
-submit.Size = UDim2.new(0.8, 0, 0, 40)
-submit.Position = UDim2.new(0.1, 0, 0.6, 0)
-submit.Text = "Submit"
-submit.Font = Enum.Font.GothamBold
-submit.TextSize = 16
-submit.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-submit.TextColor3 = Color3.new(1,1,1)
-
-Instance.new("UICorner", submit)
+----------------------------------------------------
+-- NOTIFICATION SYSTEM
+----------------------------------------------------
+local function SendNotification(title, text, duration)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title;
+        Text = text;
+        Duration = duration or 5;
+    })
+end
 
 ----------------------------------------------------
 -- MAIN UI FUNCTION (YOUR SCRIPT INSIDE HERE)
@@ -312,9 +301,11 @@ local info = {
 -- CLEAN
 ----------------------------------------------------
 local function clean(str)
-	return str:upper():gsub("[%s%-%.'&,]", "")
+    -- :upper() converts to uppercase
+    -- gsub replaces matched characters with an empty string
+    -- Added specific handling for spaces and hyphens
+    return str:upper():gsub("[%s%-%.'&,]", "")
 end
-
 ----------------------------------------------------
 -- SCORE
 ----------------------------------------------------
@@ -610,13 +601,78 @@ searchBar:GetPropertyChangedSignal("Text"):Connect(function()
 end)
 
 end
+----------------------------------------------------
+-- KEY SYSTEM UI
+----------------------------------------------------
+local keyGui = Instance.new("ScreenGui", game.CoreGui)
+keyGui.Name = "KeySystem"
 
-submit.MouseButton1Click:Connect(function()
-	if keyBox.Text == CORRECT_KEY then
-		keyGui:Destroy()
-		LoadMainUI()
-	else
-		keyBox.Text = ""
-		keyBox.PlaceholderText = "Wrong key, try again"
-	end
-end)
+local keyFrame = Instance.new("Frame", keyGui)
+keyFrame.Size = UDim2.new(0, 300, 0, 160)
+keyFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+keyFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+keyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Instance.new("UICorner", keyFrame)
+
+local keyBox = Instance.new("TextBox", keyFrame)
+keyBox.Size = UDim2.new(0.8, 0, 0, 40)
+keyBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+keyBox.PlaceholderText = "Paste Bot Key Here..."
+keyBox.Text = ""
+keyBox.Font = Enum.Font.Gotham
+keyBox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+keyBox.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", keyBox)
+
+local submit = Instance.new("TextButton", keyFrame)
+submit.Size = UDim2.new(0.8, 0, 0, 40)
+submit.Position = UDim2.new(0.1, 0, 0.6, 0)
+submit.Text = "VERIFY BOT KEY"
+submit.Font = Enum.Font.GothamBold
+submit.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+submit.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", submit)
+
+----------------------------------------------------
+-- VERIFICATION LOGIC
+----------------------------------------------------
+local function Verify()
+    local key = keyBox.Text
+    if key == "" then return end
+    
+    if not httpRequest then
+        SendNotification("Error", "Executor doesn't support HTTP requests", 10)
+        return
+    end
+
+    submit.Text = "Verifying..."
+    submit.Active = false
+
+    local success, response = pcall(function()
+        return httpRequest({
+            Url = API_URL .. "?key=" .. key,
+            Method = "GET"
+        })
+    end)
+
+    if success and response.Body then
+        local decodeSuccess, data = pcall(function() return HttpService:JSONDecode(response.Body) end)
+        
+        if decodeSuccess and data.valid == true then
+            SendNotification("Success", "Key Validated!", 5)
+            keyGui:Destroy()
+            LoadMainUI() 
+        else
+            keyBox.Text = ""
+            keyBox.PlaceholderText = "Invalid Key!"
+            submit.Text = "VERIFY BOT KEY"
+            submit.Active = true
+        end
+    else
+        keyBox.PlaceholderText = "API Error / Offline"
+        submit.Text = "RETRY"
+        submit.Active = true
+    end
+end
+
+submit.MouseButton1Click:Connect(Verify)
